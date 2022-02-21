@@ -1,0 +1,9 @@
+http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Age of Empires",
+    "author": "Eelis",
+    "url": "aoe.sankari.fi",
+    "likes": 1
+}
