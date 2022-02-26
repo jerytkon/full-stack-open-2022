@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json 
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MjE2OTE3YjNlNzMxM2QzNjVkOTgwMGMiLCJpYXQiOjE2NDU4NzU3NzR9.PbtyaXEUWIzj5-xVjtSbjQF0egotRXecZZaJyqdKq5M
+
+{     "url": "mluukkai.com/blogisto",
+      "title": "Matti Luukkaisen salaiset päiväkirjat osa 2",
+      "likes": 2,
+      "author": "Ilmarinen",
+      "userId": "6216917b3e7313d365d9800c"
+    }
