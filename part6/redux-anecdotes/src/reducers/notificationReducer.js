@@ -5,23 +5,26 @@ import { createSlice } from '@reduxjs/toolkit'
 const notificationSlice = createSlice ({
     name: 'notifications',
     initialState: {
-        notifications:[]
+        notification: ""
     },
     reducers: {
-        notificationAdded ( state, action ) {
-            const message = "you added " + action.payload
-            state.notifications.push ({
-                message: message
-            })
-        },
-        notificationVoted (state, action ) {
-            const message = "you voted " + action.payload
-            state.notifications.push ({
-                message: message
-            })
+        notification ( state , action )  {
+            console.log("j", action.payload)
+            return action.payload
         }
-    }
+        
+    },
+    
 })
   
-export const { notificationVoted, notificationAdded } = notificationSlice.actions
+export const setNotification = (message, seconds) => {
+    return async dispatch => {
+      dispatch(notification(message))
+      setTimeout(() => {
+          dispatch(notification(""))
+      }, seconds * 1000)
+    }
+  }
+
+export const { notification } = notificationSlice.actions
 export default notificationSlice.reducer

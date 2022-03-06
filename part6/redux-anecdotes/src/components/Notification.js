@@ -2,31 +2,19 @@ import { useSelector } from 'react-redux'
 import React, { useEffect, useState } from "react"
 
 const Notification = () => {
-  const {notifications} =  useSelector( state => state.notifications)
+  const notification =  useSelector( state => state.notification)
   const style = {
     border: 'solid',
     padding: 10,
     borderWidth: 1
   }
 
-  const [notification, setNotification] = useState({ type: "", message: "" });
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    if (notifications.length > 0) {
-      setNotification(notifications[notifications.length - 1]);
-      setShow(true);
-      setTimeout(() => {
-        setShow(false);
-      }, 5000);
-    }
-  }, [notifications]);
-
-  return show ?  (
+  console.log("notifikaatio", notification)
+  return notification.length > 0 ? (
     <div style={style}>
-      {notification.message}
+      {notification}
     </div>
-  ) : null;
+  ) : null ;
   }
 
 export default Notification

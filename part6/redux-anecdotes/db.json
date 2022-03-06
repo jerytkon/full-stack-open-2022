@@ -1,0 +1,64 @@
+{
+  "anecdotes": [
+    {
+      "content": "Premature optimization is the root of all evil.",
+      "id": "25170",
+      "votes": 8
+    },
+    {
+      "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
+      "id": "98312",
+      "votes": 14
+    },
+    {
+      "content": "Homo Homini Lupus",
+      "votes": 9,
+      "id": "Xp1UykX"
+    },
+    {
+      "content": "Alea jacta est",
+      "votes": 3,
+      "id": "oE9e80N"
+    },
+    {
+      "content": "Jaahas, taas testaillaan",
+      "votes": 0,
+      "id": "Px-KFyp"
+    },
+    {
+      "content": "Perkele kun renderi ei toimi",
+      "votes": 2,
+      "id": "NehBrQN"
+    },
+    {
+      "content": "testi",
+      "id": "vc371m3",
+      "votes": 4
+    },
+    {
+      "content": "Right",
+      "votes": 1,
+      "id": "fFI8Mqt"
+    },
+    {
+      "content": "testi2",
+      "votes": 0,
+      "id": "iNXPvGD"
+    },
+    {
+      "content": "jokohan nyt",
+      "votes": 2,
+      "id": "wpiPrpB"
+    },
+    {
+      "content": "Creating",
+      "votes": 0,
+      "id": "8IdghYC"
+    },
+    {
+      "content": "If he dies, he dies",
+      "votes": 0,
+      "id": "7MdJX4Z"
+    }
+  ]
+}
