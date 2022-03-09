@@ -1,5 +1,5 @@
 import { useState } from 'react'
-const Display = props => <div> {props.text} {props.value}</div>
+const Display = props => <tr><th>{props.text}</th><td>{props.value}</td></tr>
 
 const Button = (props) => (
   <button onClick={props.handleClick}>
@@ -18,17 +18,19 @@ const Statistics = (props) => {
     </div> )
   } else { 
   return (
-    
-  
-  <div>
+   <div>
     <h1> statistics </h1>
+  <table>
+    <tbody>
       <Display text='Good' value={props.good}/>
       <Display text='Neutral' value={props.neutral}/>
       <Display text='Bad' value={props.bad}/>
       <Display text='all' value={props.good + props.bad + props.neutral}/>
       <Display text='average' value={(props.good + props.bad + props.neutral) / 3}/>
       <Display text='positive' value={props.good / (props.good + props.bad + props.neutral)}/>
-  </div>
+    </tbody>
+  </table>
+  </div> 
   )
   }
 } 
