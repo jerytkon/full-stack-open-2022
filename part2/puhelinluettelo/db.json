@@ -12,18 +12,13 @@
     },
     {
       "name": "Vera Virta",
-      "number": "040<3<3<3<3",
-      "id": 4
+      "id": 4,
+      "number": "04412312222"
     },
     {
       "name": "Artsi Helleeni",
       "number": "04444444",
       "id": 5
-    },
-    {
-      "name": "Jaska Jokunen",
-      "number": "044222222",
-      "id": 6
     }
   ]
 }

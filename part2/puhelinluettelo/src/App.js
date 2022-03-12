@@ -41,6 +41,7 @@ const ShowFormat = (props) => {
   )
 }
 
+
 const Notification = ({ message }) => {
   const notificationStyle = {
       color: 'green',
@@ -59,11 +60,16 @@ const Notification = ({ message }) => {
   )
 }
 
+
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [filter, setFilter] = useState('')
+
+  console.log(filter)
 
   useEffect(() => {
     personService
@@ -80,8 +86,10 @@ const App = () => {
       number: newNumber
     }
     const found = persons.find(person => person.name === personObject.name)
-    if (found) {return window.alert(`${newName} is already in the phone book`, setNewName(''), setNewNumber(''))
-    
+    if (found) {if 
+      (window.confirm(`${newName} is already in the phone book, replace the old number with a new one`)) 
+      {return (changePhoneNumber(found.id, personObject.number) );} else { console.log('cancel?'); 
+    }
       
     } else {
       personService
@@ -98,9 +106,11 @@ const App = () => {
     }
   }
 
-  const Persons = (props) => {
+
+  const Persons = () => {
+    const filterPersons = persons.filter((person) => person.name.startsWith(filter))
     return (
-      props.persons.map(person => 
+      filterPersons.map(person => 
         <Person key={person.id} 
         person={person}
         deletePerson={() => deletePersonFrom(person.id, person.name)}
@@ -109,7 +119,6 @@ const App = () => {
   }
 
   const deletePersonFrom = (id, name ) => {
-    console.log(id)
     personService
     .poista(id).then(() => {
       setErrorMessage(`${name} was deleted`)
@@ -117,8 +126,32 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)
       setPersons(persons.filter(person => person.id !== id))
+    }).catch(error => {
+      setErrorMessage(`${name} has already been deleted from the server`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     })
-  }
+}
+
+  const changePhoneNumber = (id, newNumber) => {
+    const person = persons.find(n => n.id === id)
+    const changedPerson = {...person, number: newNumber}
+
+    personService
+    .update(id, changedPerson)
+    .then(returnedPerson => {
+      setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+      setNewName('')
+      setNewNumber('')
+    })
+    .catch(error => {
+      alert(
+        `the note '${person.name}' was already deleted from server`
+      )
+      setPersons(persons.filter(n => n.id !== id))
+    })
+}
   const handleNameChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
@@ -127,9 +160,20 @@ const App = () => {
     console.log(event.target.value)
     setNewNumber(event.target.value)
   }
+
+  const handleFilterChange = (event) => {
+    console.log(event.target.value)
+    setFilter(event.target.value)
+  }
+
+
+
   return (
     <div>
       <h2>Phonebook</h2>
+      filter shown with 
+      <input value={filter} onChange={handleFilterChange}/>
+      <h2>Add new </h2>
       <Notification message={errorMessage} />
       <ShowFormat addPerson={addPerson} newName={newName} newNumber={newNumber}
       handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}/>
