@@ -1,7 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react'
 import countriesService from './services/countries'
-import weatherService from './services/weather'
 import axios from 'axios'
 
 const api_key = process.env.REACT_APP_API_KEY
@@ -55,67 +54,84 @@ const ShowWeather = ({ weather, name, wind, icon}) => {
     )
   }
 }
+const ShowDetails = ({countries, filter}) => {
+  const filterCountries = countries.filter((country) => country.name.common.toLowerCase().startsWith(filter.toLowerCase()))
+  const showOneCountry = filterCountries.map(country => <ShowCountryDetails key={country.ccn3} name={country.name.common}
+  capital={country.capital} area={country.area} languages={country.languages} flag={country.flag}/>)
+  return showOneCountry
+}
 
 
 function App() {
   const [countries, setCountries] = useState([])
   const [filter, setFilter] = useState('')
   const [weather, setWeather] = useState([])
-  const [filteredCountries, setFilteredCountries] = useState([])
-  const [capital, setCapital] = useState('Helsinki')
   useEffect(() => {
     countriesService
       .getAll()
-      .then(response => {console.log("response", response) || 
+      .then(response => {
         setCountries(response)
       })
   }, [])
 
-const city_name = capital
+  const filteredValue = ({countries, filter}) => {
+    const getCapital = countries.filter((country) => country.name.common.toLowerCase().startsWith(filter.toLowerCase()))
+    if (getCapital.length === 0) {return 'Helsinki'} else {
+      return getCapital[0].capital[0]
+    }
+  }
+
+
+const city_name = filteredValue({countries, filter})
 const baseUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city_name}&appid=${api_key}`
 
 
   useEffect(() => {
     axios
       .get(baseUrl)
-      .then(response => {console.log("response", response) || 
+      .then(response => {
         setWeather(response.data)
       })
-  }, [capital])
+  }, [filter])
 
 
-
+  console.log("filteredValue", filteredValue({countries, filter}))
 
   const ShowCountries = ({countries, filter}) => {
     const filterCountries = countries.filter((country) => country.name.common.toLowerCase().startsWith(filter.toLowerCase()))
-    const listToShow = filterCountries.map(country => <ShowCountry key={country.ccn3} country={country.name.common} handleClick={() => setFilter(country.name.common)} />)
-    const showOneCountry = filterCountries.map(country => <ShowCountryDetails key={country.ccn3} name={country.name.common}
-      capital={country.capital} area={country.area} languages={country.languages} flag={country.flag}/>)
-    if (filterCountries.length < 11 && filterCountries.length > 1) {
-    return  listToShow 
-    } else if (filterCountries.length === 1) {
-      return showOneCountry
-    } else {
-      return <div> Too many matches, specify another filter </div>
-    }
-  }
-
+    const listToShow = filterCountries.map(country => <ShowCountry key={country.ccn3} country={country.name.common} handleClick={() => handleFilterView(country.name.common)}/>)
+    return  listToShow  }
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
-    const getCapital = countries.filter((country) => country.name.common.toLowerCase().startsWith(filter.toLowerCase()))
-    setCapital(getCapital[0].capital[0])
-    setFilteredCountries(getCapital)
   }
 
+  const handleFilterView = (value) => {
+    setFilter(value)
+  }
+
+
+
+  const ShowAll = ({countries, filter, weather}) => {
+    const filterCountries = countries.filter((country) => country.name.common.toLowerCase().startsWith(filter.toLowerCase()))
+    if (filterCountries.length < 11 && filterCountries.length > 1) {
+      return <ShowCountries countries={countries} filter={filter} />
+    } else if (filterCountries.length === 1) {
+      return (
+       <div>
+      <ShowDetails countries={countries} filter={filter} /> 
+      <ShowWeather weather={weather.main} name={weather.name} wind={weather.wind} icon={weather.weather}/>
+      </div> )}
+      else {return <div>Too many results, specify filter</div>}
+
+  }
 
 
   return (
     <div>
       find countries:
       <input value={filter} onChange={handleFilterChange}/>
-      <ShowCountries countries={countries} filter={filter} />
-      {filteredCountries.length === 1 ? <ShowWeather weather={weather.main} name={weather.name} wind={weather.wind} icon={weather.weather}/>: null}
+      <ShowAll weather={weather} countries={countries} filter={filter}/>
     </div>
   );
 }
