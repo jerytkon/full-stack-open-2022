@@ -23,4 +23,7 @@ test('<Blogform /> updates parent state and calls onSubmit', () => {
 
   expect(createBlog.mock.calls).toHaveLength(1)
   expect(createBlog.mock.calls[0][0].title).toBe('testing a form...' )
+  expect(createBlog.mock.calls[0][0].author).toBe('tjaakob' )
+  expect(createBlog.mock.calls[0][0].url).toBe('twww.wwww')
+  expect(createBlog.mock.calls[0][0].likes).toBe(0)
 })

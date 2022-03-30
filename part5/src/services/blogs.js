@@ -25,7 +25,15 @@ const update = async (id, newObject) => {
   const config = {
     headers: { Authorization: token },
   }
-  const response = await axios.put(baseUrl, newObject, id, config)
+  const response = await axios.put(`${baseUrl}/${id}`, newObject, config)
+  return response.data
+}
+
+const poista = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const response = await axios.delete(`${baseUrl}/${id}`, config)
   return response.data
 }
 
@@ -36,4 +44,4 @@ const update = (id, newObject) => {
 }
 */
 
-export default { getAll, create, setToken, update}
+export default { getAll, create, setToken, update, poista}

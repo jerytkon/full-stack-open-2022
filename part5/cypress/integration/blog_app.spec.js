@@ -37,18 +37,44 @@ describe('Blog app', function() {
   })
   describe('When logged in', function() {
       beforeEach(function() {
-        cy.contains('log in').click()
-        cy.get('#username').type('mluukkai')
-        cy.get('#password').type('salainen')
-        cy.get('#login-button').click()
+        cy.request('POST', 'http://localhost:3003/api/login', {
+          username: 'mluukkai', password: 'salainen'
+        }).then(response => {
+          localStorage.setItem('loggedBlogappUser', JSON.stringify(response.body))
+          cy.visit('http://localhost:3000')
+        })
       })
 
     it('A blog can be created', function() {
       cy.contains('new note').click()
       cy.get('#title').type('a note created by cypress')
       cy.get('#author').type('Jape')
+      cy.get('#url').type('www.japensivut.com')
       cy.contains('save').click()
       cy.contains('a note created by cypress')
+    })
+    it('A blog can be liked', function() {
+      cy.contains('new note').click()
+      cy.get('#title').type('a note created by cypress')
+      cy.get('#author').type('Jape')
+      cy.get('#url').type('www.japensivut.com')
+      cy.contains('save').click()
+      cy.contains('a note created by cypress')
+      cy.contains('view/hide').click()
+      cy.contains('like').click()
+      cy.contains('view/hide').click()
+      cy.contains('likes').contains(1)
+    })
+    it('A blog can be deleted', function() {
+      cy.contains('new note').click()
+      cy.get('#title').type('a note created by cypress')
+      cy.get('#author').type('Jape')
+      cy.get('#url').type('www.japensivut.com')
+      cy.contains('save').click()
+      cy.contains('a note created by cypress')
+      cy.contains('view/hide').click()
+      cy.contains('delete').click()
+      cy.contains('view/hide').should('not.exist')
     })
   })
 })

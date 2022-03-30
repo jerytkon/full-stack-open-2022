@@ -95,7 +95,8 @@ const App = () => {
   const addLike = id => {
     const blog = blogs.find(n => n.id === id)
     console.log("tässä mennään", blog)
-    const changedBlog = { ...blog, likes: blog.likes += 1 }
+    const changedBlog = { ...blog, likes: blog.likes + 1 }
+    console.log(changedBlog)
   
     blogService
       .update(id, changedBlog)
@@ -113,6 +114,11 @@ const App = () => {
       })
   }
 
+  const deleteBlog = id => {
+    blogService
+      .poista(id)
+      .then(setBlogs(blogs.filter(blog => blog.id !== id)))
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -150,6 +156,7 @@ const App = () => {
     }
     console.log(blogObject)
 
+
     blogService
       .create(blogObject)
       .then(returnedBlog => {
@@ -157,11 +164,24 @@ const App = () => {
         setNewTitle('')
         setNewAuthor('')
         setNewUrl('')
+        setErrorMessage(`a new blog ${blogObject.title} by ${blogObject.author} was added`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
   }
 
 
   const loggedUser = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
+
+  const ShowBlogs = ({ blogs }) => {
+    const sortedBlogs = blogs.sort((a, b) => parseFloat(b.likes) - parseFloat(a.likes))
+    return ( sortedBlogs.map(blog =>
+      <Blog key={blog.id} blog={blog} 
+      addLike={() => addLike(blog.id)} 
+      deleteBlog={() => deleteBlog(blog.id)} />
+    ))
+  }
 
   // RENDERÖINTI
 
@@ -178,10 +198,8 @@ const App = () => {
         blogForm()
       }
       <div>
-        { user ? (blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} 
-          addLike={() => addLike(blog.id)} />
-        )) : <p></p> }
+        { user ? <ShowBlogs blogs={blogs}/>
+         : <p></p> }
       </div>
 
 
