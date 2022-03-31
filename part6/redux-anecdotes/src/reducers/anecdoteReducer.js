@@ -13,8 +13,6 @@ const anecdoteSlice = createSlice ({
       
     },*/
     vote(state, action) {
-      console.log(state)
-      console.log(action)
       const id = action.payload.id
       const anecdoteFind = state.find(n => n.id === id)
       const likeAdded = {
@@ -40,6 +38,8 @@ export const initializeAnecdotes = () => {
   }
 }
 
+export const selectAllAnecdotes = state =>  state.anecdotes
+
 export const createAnecdote = content => {
   return async dispatch => {
     const newAnecdote = await anecdotesService.createNew(content)
@@ -48,10 +48,8 @@ export const createAnecdote = content => {
 }
 
 export const voteAnecdote = (id) => {
-  console.log("rivi 50", id)
   return async dispatch => {
     const votable = await anecdotesService.addLike(id)
-    console.log("votable", votable)
     dispatch(vote(votable))
   }
 }

@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { notification } from '../reducers/notificationReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { selectAllAnecdotes } from '../reducers/anecdoteReducer'
 
 
 const Anecdote = ({ anecdote, handleClick }) => {
@@ -20,11 +21,12 @@ const Anecdote = ({ anecdote, handleClick }) => {
 
 const Anecdotes = () => {
     const dispatch = useDispatch()
-    const anecdotes = useSelector(state => state.anecdotes)
-    console.log("in list here", anecdotes)
+    const anecdotes = useSelector(selectAllAnecdotes)
+    const sortedAnecdotes = [...anecdotes].sort((a, b) => parseFloat(b.votes) - parseFloat(a.votes))
+    console.log("in list here", sortedAnecdotes)
     return (
         <div>
-        {anecdotes.map(anecdote =>
+        {sortedAnecdotes.map(anecdote =>
         <Anecdote
         key={anecdote.id}
         anecdote={anecdote}
