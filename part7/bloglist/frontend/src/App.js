@@ -1,41 +1,41 @@
 /* eslint-disable */
-import { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
-import blogService from "./services/blogs";
-import loginService from "./services/login";
-import Notification from "./components/Notification";
-import BlogForm from "./components/Blogform";
-import LoginForm from "./components/LoginForm";
-import LoginForm2 from "./components/LoginForm2";
-import loginForm from "./components/LoginForm2";
-import ShowUser from "./components/showUser";
-import Togglable from "./components/Togglable";
-import { useDispatch, useSelector } from "react-redux";
-import { setNotification } from "./reducers/notificationReducer";
-import { setBlogs } from "./reducers/blogReducer";
-import { initializeBlogs } from "./reducers/blogReducer";
-import { createBlog } from "./reducers/blogReducer";
-import { selectAllBlogs } from "./reducers/blogReducer";
-import { likeBlog, deleteBlogi } from "./reducers/blogReducer";
-import userService from "./services/users";
-import BlogForm2 from "./components/BlogForm2";
-import { Table } from 'react-bootstrap'
+import { useState, useEffect, useRef } from 'react';
+import Blog from './components/Blog';
+import blogService from './services/blogs';
+import loginService from './services/login';
+import Notification from './components/Notification';
+import BlogForm from './components/Blogform';
+import LoginForm from './components/LoginForm';
+import LoginForm2 from './components/LoginForm2';
+import loginForm from './components/LoginForm2';
+import ShowUser from './components/showUser';
+import Togglable from './components/Togglable';
+import { useDispatch, useSelector } from 'react-redux';
+import { setNotification } from './reducers/notificationReducer';
+import { setBlogs } from './reducers/blogReducer';
+import { initializeBlogs } from './reducers/blogReducer';
+import { createBlog } from './reducers/blogReducer';
+import { selectAllBlogs } from './reducers/blogReducer';
+import { likeBlog, deleteBlogi } from './reducers/blogReducer';
+import userService from './services/users';
+import BlogForm2 from './components/BlogForm2';
+import { Table } from 'react-bootstrap';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Link,
   useParams
-} from "react-router-dom";
-import "./mystyle.css";
+} from 'react-router-dom';
+import './mystyle.css';
 
 const App = () => {
   //const [blogs, setBlogs] = useState([])
-  const [newTitle, setNewTitle] = useState("");
-  const [newUrl, setNewUrl] = useState("");
-  const [newAuthor, setNewAuthor] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [newTitle, setNewTitle] = useState('');
+  const [newUrl, setNewUrl] = useState('');
+  const [newAuthor, setNewAuthor] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [loginVisible, setLoginVisible] = useState(false);
@@ -55,7 +55,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
@@ -70,21 +70,21 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    console.log("logging in with", username, password);
+    console.log('logging in with', username, password);
     try {
       const user = await loginService.login({
         username,
         password
       });
 
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
 
       blogService.setToken(user.token);
       setUser(user);
-      setUsername("");
-      setPassword("");
+      setUsername('');
+      setPassword('');
     } catch (exception) {
-      dispatch(setNotification("wrong credentials", 5));
+      dispatch(setNotification('wrong credentials', 5));
     }
   };
 
@@ -100,9 +100,9 @@ const App = () => {
     console.log(blogObject);
 
     dispatch(createBlog(blogObject));
-    setNewTitle("");
-    setNewAuthor("");
-    setNewUrl("");
+    setNewTitle('');
+    setNewAuthor('');
+    setNewUrl('');
     dispatch(
       setNotification(
         `a new blog ${blogObject.title} by ${blogObject.author} was added`,
@@ -112,7 +112,7 @@ const App = () => {
   };
 
   const loggedUser = JSON.parse(
-    window.localStorage.getItem("loggedBlogappUser")
+    window.localStorage.getItem('loggedBlogappUser')
   );
 
   const ShowBlogs = () => {
@@ -121,17 +121,18 @@ const App = () => {
       (a, b) => parseFloat(b.likes) - parseFloat(a.likes)
     );
     return (
-      <tbody>{sortedBlogs.map((blog) => (
-      <tr key={blog.id}>
-        <td>
-        <Link to={`/api/blogs/${blog.id}`}>
-          {blog.title} {blog.author}
-        </Link>
-        </td>
-      </tr>
-    )
-    )}
-    </tbody>);
+      <tbody>
+        {sortedBlogs.map((blog) => (
+          <tr key={blog.id}>
+            <td>
+              <Link to={`/api/blogs/${blog.id}`}>
+                {blog.title} {blog.author}
+              </Link>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    );
   };
 
   const ShowBlogsPage = () => {
@@ -150,14 +151,16 @@ const App = () => {
           noteFormRef={noteFormRef}
           username={username}
         />
-        <Table striped><ShowBlogs /></Table >
+        <Table striped>
+          <ShowBlogs />
+        </Table>
       </div>
     );
   };
 
   const ShowUser2 = (kayttaja) => {
     const df = kayttaja;
-    console.log("here", df);
+    console.log('here', df);
     try {
       return (
         <tr>
@@ -211,7 +214,7 @@ const App = () => {
         <div>
           <h1>blog app</h1>
           <div>
-            {user !== null ? (
+            {user === null ? (
               <ShowUser loggedUser={loggedUser} setUser={setUser} />
             ) : (
               <p></p>
@@ -220,11 +223,17 @@ const App = () => {
           <h1>{user.name}</h1>
           <p>Added blogs</p>
           <br></br>
-          {user.blogs.map((blog) => (
-            <li key={blog.id}>
-              <Link to={`/api/blogs/${blog.id}`}>{blog.title}</Link>
-            </li>
-          ))}
+          <Table striped>
+            <tbody>
+              {user.blogs.map((blog) => (
+                <tr key={blog.id}>
+                  <td>
+                    <Link to={`/api/blogs/${blog.id}`}>{blog.title}</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </div>
       );
     }
@@ -247,7 +256,7 @@ const App = () => {
             blog={blog}
             addLike={() =>
               dispatch(likeBlog(blog)) &
-              dispatch(setNotification("you voted " + blog.title, 5)).catch(
+              dispatch(setNotification('you voted ' + blog.title, 5)).catch(
                 (error) => {
                   dispatch(
                     setNotification(
@@ -260,7 +269,7 @@ const App = () => {
             }
             deleteBlog={() =>
               dispatch(deleteBlogi(blog)) &
-              dispatch(setNotification("you deleted " + blog.title, 5))
+              dispatch(setNotification('you deleted ' + blog.title, 5))
             }
           />
           <br></br>
@@ -271,7 +280,7 @@ const App = () => {
   // RENDERÖINTI
 
   const Home = ({ user, loggedUser, setUser, users }) => {
-    console.log("loggedUser", loggedUser);
+    console.log('loggedUser', loggedUser);
     return (
       <div>
         <div>
@@ -304,7 +313,9 @@ const App = () => {
           />
         )}
         <div>
-          <ul><Table striped>{user ? <ShowBlogs /> : <tbody></tbody>}</Table></ul>
+          <ul>
+            <Table striped>{user ? <ShowBlogs /> : <tbody></tbody>}</Table>
+          </ul>
         </div>
         <div>
           <ShowUsers users={users} />
@@ -333,15 +344,15 @@ const App = () => {
 
           {user !== null ? (
             <em>
-              {loggedUser.name} logged in &nbsp;{" "}
+              {loggedUser.name} logged in &nbsp;{' '}
               <button
                 onClick={() => {
                   setUser(null);
-                  window.localStorage.removeItem("loggedBlogappUser");
+                  window.localStorage.removeItem('loggedBlogappUser');
                 }}
               >
                 log out
-              </button>{" "}
+              </button>{' '}
             </em>
           ) : (
             <p></p>
