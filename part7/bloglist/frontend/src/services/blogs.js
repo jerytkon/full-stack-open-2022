@@ -29,14 +29,26 @@ const update = async (id, newObject) => {
   return response.data
 }
 
-const poista = async (id) => {
+const addLike = async (object) => {
   const config = {
     headers: { Authorization: token },
   }
-  const response = await axios.delete(`${baseUrl}/${id}`, config)
+  const newObject = { ...object, likes: object.likes + 1 }
+  const response = await axios.put(`${baseUrl}/${object.id}`, newObject, config )
+  return newObject
+}
+
+const poista = async (object) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const response = await axios.delete(`${baseUrl}/${object.id}`, config)
   return response.data
 }
 
-  console.log('hello world')
 
-export default { getAll, create, setToken, update, poista}
+
+
+console.log('hello world')
+
+export default { getAll, create, setToken, update, poista, addLike}

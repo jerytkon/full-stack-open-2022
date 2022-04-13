@@ -1,5 +1,5 @@
 
-const LoginForm = ({
+const BlogForm = ({
   newTitle,
   newAuthor,
   newUrl,
@@ -45,4 +45,4 @@ const LoginForm = ({
   )
 }
 
-export default LoginForm
+export default BlogForm

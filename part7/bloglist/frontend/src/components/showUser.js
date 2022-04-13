@@ -2,11 +2,11 @@ import PropTypes from 'prop-types'
 const showUser = ({ loggedUser, setUser }) => {
   return (
     <div>
-      <li>{loggedUser.name} logged in</li>
+      {loggedUser.name} logged in &nbsp;
       <button onClick={() => {
         setUser(null)
         window.localStorage.removeItem('loggedBlogappUser')}}>
-        log out
+         log out
       </button>
     </div>
   )}
